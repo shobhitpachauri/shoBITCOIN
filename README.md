@@ -1,69 +1,177 @@
 # shoBITCOIN
 
-A hands-on Web3 learning project combining **smart contracts, blockchain, DeFi, analytics, business analysis, and AI**.
+A hands-on Web3 learning project exploring **Ethereum, crypto, DeFi, financial analytics, data analysis, and AI**.
 
-The project will eventually explore how blockchain-based applications can be built, analyzed, and enhanced with AI-driven insights.
+The project started as a simple smart contract and token experiment and will gradually evolve into an **AI-powered Crypto & DeFi Intelligence Platform**.
 
-## Project Goals
+---
+
+## 🎯 Project Goals
 
 * Learn how Ethereum and blockchain networks work in practice
-* Build and deploy a token smart contract using Solidity
+* Build and interact with smart contracts using Solidity
 * Understand wallets, transactions, gas, and blockchain explorers
-* Build a simple music-focused Web3 application
-* Analyze blockchain activity using SQL and BI tools
-* Explore AI-assisted analytics and business insights
+* Understand cryptocurrency and DeFi fundamentals
+* Explore tokenomics, stablecoins, liquidity, lending, staking, and decentralized exchanges
+* Collect and analyze crypto and on-chain data using SQL and analytics tools
+* Build financial and DeFi analytics dashboards
+* Develop an AI-powered crypto research and analysis layer
+* Combine **blockchain + finance + analytics + AI** into one practical portfolio project
 
-## Current Status
+---
 
-🟢 **Step 1 — Wallet & Testnet Setup: Completed**
+## 🗺️ Project Roadmap
+
+```mermaid
+flowchart LR
+    A[Ethereum Fundamentals] --> B[Smart Contracts]
+    B --> C[Crypto & DeFi]
+    C --> D[On-Chain Data]
+    D --> E[Financial Analytics]
+    E --> F[Crypto & DeFi Dashboard]
+    F --> G[AI Research Layer]
+    G --> H[Crypto Intelligence Platform]
+```
+
+---
+
+## 📌 Current Status
+
+### 🟢 Step 1 — Wallet & Testnet Setup: Completed
 
 * Created a MetaMask wallet
 * Secured the Secret Recovery Phrase offline
 * Enabled the Ethereum Sepolia test network
 * Obtained Sepolia test ETH through a testnet faucet
-* Confirmed a Sepolia balance of approximately 0.071 ETH
+* Confirmed a Sepolia ETH balance
 * Created this GitHub repository
 
-🔲 Step 2 — Build the ShobitCoin Smart Contract
+### 🟢 Step 2 — Build the shoBITCOIN Smart Contract: Completed
 
-🔲 Step 3 — Deploy ShobitCoin to Ethereum Sepolia
+* Created an ERC-20 token smart contract using Solidity
+* Compiled the contract using Remix
+* Created a total supply of **1,000,000 SHOBIT**
+* Deployed the contract to the Ethereum Sepolia test network
+* Interacted with contract functions
+* Checked the token balance
+* Verified the contract and token using a blockchain explorer
 
-🔲 Step 4 — Execute the First ShobitCoin Transfer
+### 🔲 Step 3 — Execute the First shoBITCOIN Transfer
 
-🔲 Step 5 — Build ShobitMusic dApp
+* Send SHOBIT between wallets
+* Understand transaction confirmation
+* Explore transaction fees and gas
+* Verify the transaction on the blockchain
 
-🔲 Step 6 — Collect & Analyze Blockchain Data
+### 🔲 Step 4 — Learn Crypto & DeFi Fundamentals
 
-🔲 Step 7 — Build Analytics Dashboard
+* Bitcoin vs Ethereum
+* Stablecoins
+* Decentralized exchanges
+* Liquidity
+* Lending and borrowing
+* Staking
+* Tokenomics
+* Protocol fees and revenue
+* Total Value Locked (TVL)
+* DeFi risks
 
-🔲 Step 8 — Add AI Analytics Layer
+### 🔲 Step 5 — Collect & Analyze Crypto / On-Chain Data
 
-## Technology Roadmap
+* Token prices
+* Market capitalization
+* Trading volume
+* TVL
+* Protocol fees and revenue
+* Transactions
+* Wallet activity
+* Token holders
+* Token distribution
 
-**Blockchain**
+### 🔲 Step 6 — Build Crypto & DeFi Analytics
+
+* SQL-based analysis
+* Financial KPIs
+* Token and protocol analysis
+* Wallet and transaction analysis
+* Risk indicators
+* Historical trend analysis
+
+### 🔲 Step 7 — Build Crypto & DeFi Analytics Dashboard
+
+* Market performance
+* Protocol performance
+* Tokenomics
+* Liquidity
+* Financial metrics
+* Risk metrics
+* Interactive visualizations
+
+### 🔲 Step 8 — Build AI Crypto Research Layer
+
+* AI-powered financial analysis
+* Natural-language data exploration
+* Protocol research summaries
+* AI-assisted risk analysis
+* Protocol comparisons
+* Intelligent insights from structured data
+
+---
+
+## 🧩 Technology Stack
+
+### Blockchain
 
 * Ethereum
 * Sepolia Testnet
 * MetaMask
+* Etherscan
 
-**Smart Contracts**
+### Smart Contracts
 
 * Solidity
 * ERC-20
 * Remix
 
-**Analytics**
+### Analytics
 
 * SQL
 * Power BI
-* Blockchain/on-chain data
+* Financial Analysis
+* On-chain / Blockchain Data
 
-**AI**
+### AI
 
-* AI-assisted analytics
-* Natural-language data exploration
-* Automated insights and reporting
+* Generative AI
+* AI-assisted Financial Analysis
+* Natural-language Data Exploration
+* AI Research Agents
+* Intelligent Insights
 
-## Disclaimer
+---
 
-ShobitCoin is an educational project created for learning and experimentation on an Ethereum test network. It is not intended as a financial product or investment.
+## 🔭 Long-Term Vision
+
+The goal is to build an **AI-powered Crypto & DeFi Intelligence Platform** that combines:
+
+> **Blockchain → Data → Finance → Analytics → AI**
+
+The platform will eventually allow users to explore crypto assets and DeFi protocols through structured data, financial metrics, dashboards, and AI-generated research insights.
+
+---
+
+## 📚 Learning Approach
+
+This project is being developed incrementally:
+
+**Learn → Build → Analyze → Document → Repeat**
+
+Each major stage will be documented through GitHub commits, technical notes, and project updates.
+
+---
+
+## ⚠️ Disclaimer
+
+shoBITCOIN is an educational and experimental project.
+
+The current SHOBIT token is deployed on the **Ethereum Sepolia test network** and is not intended as a financial product or investment.
