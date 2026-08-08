@@ -2,7 +2,7 @@
 
 A hands-on Web3 learning project exploring **Ethereum, crypto, DeFi, financial analytics, data analysis, and AI**.
 
-The project started as a simple smart contract and token experiment and will gradually evolve into an **AI-powered Crypto & DeFi Intelligence Platform**.
+The project started as a simple smart contract and token experiment and is gradually evolving into an **AI-powered Crypto & DeFi Intelligence Platform**.
 
 ---
 
@@ -56,14 +56,27 @@ flowchart LR
 * Checked the token balance
 * Verified the contract and token using a blockchain explorer
 
-### 🔲 Step 3 — Execute the First shoBITCOIN Transfer
+### 🟢 Step 3 — Build a Simple Escrow Smart Contract: Completed
+
+* Created a `SimpleEscrow` smart contract using Solidity
+* Implemented Buyer and Seller roles
+* Deployed the contract to Ethereum Sepolia
+* Deposited **0.001 SepoliaETH** into the escrow
+* Verified the contract balance using `getBalance()`
+* Released the ETH from the smart contract to the Seller
+* Verified the internal ETH transfer using Sepolia Etherscan
+* Learned the difference between a wallet transaction and a smart-contract internal transfer
+* Explored gas limits, gas prices, and transaction fees
+* Learned the relationship between ETH and Wei
+
+### 🔲 Step 4 — Execute the First shoBITCOIN Transfer
 
 * Send SHOBIT between wallets
 * Understand transaction confirmation
 * Explore transaction fees and gas
 * Verify the transaction on the blockchain
 
-### 🔲 Step 4 — Learn Crypto & DeFi Fundamentals
+### 🔲 Step 5 — Learn Crypto & DeFi Fundamentals
 
 * Bitcoin vs Ethereum
 * Stablecoins
@@ -76,7 +89,7 @@ flowchart LR
 * Total Value Locked (TVL)
 * DeFi risks
 
-### 🔲 Step 5 — Collect & Analyze Crypto / On-Chain Data
+### 🔲 Step 6 — Collect & Analyze Crypto / On-Chain Data
 
 * Token prices
 * Market capitalization
@@ -88,7 +101,7 @@ flowchart LR
 * Token holders
 * Token distribution
 
-### 🔲 Step 6 — Build Crypto & DeFi Analytics
+### 🔲 Step 7 — Build Crypto & DeFi Analytics
 
 * SQL-based analysis
 * Financial KPIs
@@ -97,7 +110,7 @@ flowchart LR
 * Risk indicators
 * Historical trend analysis
 
-### 🔲 Step 7 — Build Crypto & DeFi Analytics Dashboard
+### 🔲 Step 8 — Build Crypto & DeFi Analytics Dashboard
 
 * Market performance
 * Protocol performance
@@ -107,7 +120,7 @@ flowchart LR
 * Risk metrics
 * Interactive visualizations
 
-### 🔲 Step 8 — Build AI Crypto Research Layer
+### 🔲 Step 9 — Build AI Crypto Research Layer
 
 * AI-powered financial analysis
 * Natural-language data exploration
@@ -147,6 +160,24 @@ flowchart LR
 * Natural-language Data Exploration
 * AI Research Agents
 * Intelligent Insights
+
+---
+
+## 📂 Project Structure
+
+```text
+shoBITCOIN/
+│
+├── README.md
+│
+├── shoBITCOIN.sol
+├── SimpleEscrow.sol
+│
+└── docs/
+    └── escrow.md
+```
+
+The repository will grow as new smart contracts, analyses, datasets, dashboards, and AI components are developed.
 
 ---
 
