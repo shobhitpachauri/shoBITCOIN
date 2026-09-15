@@ -1,208 +1,155 @@
 # shoBITCOIN
 
-A hands-on Web3 learning project exploring **Ethereum, crypto, DeFi, financial analytics, data analysis, and AI**.
+## Idea
 
-The project started as a simple smart contract and token experiment and is gradually evolving into an **AI-powered Crypto & DeFi Intelligence Platform**.
+**shoBITCOIN** is an open-source project for building a Digital Asset Due
+Diligence and Risk Intelligence Platform.
 
----
+The platform will combine blockchain data, smart-contract analysis,
+tokenomics, financial analytics, governance, cybersecurity, and regulatory
+research into explainable digital-asset assessments.
 
-## 🎯 Project Goals
+The central question is:
 
-* Learn how Ethereum and blockchain networks work in practice
-* Build and interact with smart contracts using Solidity
-* Understand wallets, transactions, gas, and blockchain explorers
-* Understand cryptocurrency and DeFi fundamentals
-* Explore tokenomics, stablecoins, liquidity, lending, staking, and decentralized exchanges
-* Collect and analyze crypto and on-chain data using SQL and analytics tools
-* Build financial and DeFi analytics dashboards
-* Develop an AI-powered crypto research and analysis layer
-* Combine **blockchain + finance + analytics + AI** into one practical portfolio project
+> Before an institution interacts with a digital asset or protocol, what is
+> it interacting with, what could go wrong, what controls exist, and what
+> evidence supports the conclusion?
 
----
+Every finding must follow this chain:
 
-## 🗺️ Project Roadmap
-
-```mermaid
-flowchart LR
-    A[Ethereum Fundamentals] --> B[Smart Contracts]
-    B --> C[Crypto & DeFi]
-    C --> D[On-Chain Data]
-    D --> E[Financial Analytics]
-    E --> F[Crypto & DeFi Dashboard]
-    F --> G[AI Research Layer]
-    G --> H[Crypto Intelligence Platform]
+```text
+Question -> Evidence -> Rule -> Finding -> Risk Level -> Confidence
 ```
 
----
+The system must not produce unexplained black-box scores.
 
-## 📌 Current Status
+## Project Info
 
-### 🟢 Step 1 — Wallet & Testnet Setup: Completed
+| Area | Current decision |
+| --- | --- |
+| Network | Ethereum mainnet for analysis; Sepolia for learning contracts |
+| Protocol | Aave V3 |
+| Main contract | `0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2` |
+| Data source | Etherscan free API |
+| Raw data | Timestamped JSON in `data/raw/etherscan/` |
+| Staged data | SQLite in `data/staging/shobitcoin.db` |
+| Main tools | Python, SQLite, SQL, Power BI, Solidity |
+| Cost goal | $0 recurring cost |
 
-* Created a MetaMask wallet
-* Secured the Secret Recovery Phrase offline
-* Enabled the Ethereum Sepolia test network
-* Obtained Sepolia test ETH through a testnet faucet
-* Confirmed a Sepolia ETH balance
-* Created this GitHub repository
+Free and public data sources will be used wherever possible. Data will never
+be invented; unavailable data will be labeled `Data unavailable.` Estimates
+will be clearly identified.
 
-### 🟢 Step 2 — Build the shoBITCOIN Smart Contract: Completed
+## Steps Achieved
 
-* Created an ERC-20 token smart contract using Solidity
-* Compiled the contract using Remix
-* Created a total supply of **1,000,000 SHOBIT**
-* Deployed the contract to the Ethereum Sepolia test network
-* Interacted with contract functions
-* Checked the token balance
-* Verified the contract and token using a blockchain explorer
+- Created the project repository and initial Web3 learning workflow.
+- Created and deployed the `shoBITCOIN` ERC-20 token on Ethereum Sepolia.
+- Created and deployed the `SimpleEscrow` contract on Ethereum Sepolia.
+- Practiced wallets, transactions, gas, Wei, internal transfers, and Etherscan verification.
+- Added an Etherscan extractor for normal transactions (`txlist`) and ERC-20 transfers (`tokentx`).
+- Extracted raw Aave V3 Pool data from Ethereum mainnet.
+- Added SQLite staging for cleaned, typed, and deduplicated records.
+- Confirmed the staging database contains 2,000 transactions and 58 unique token transfers.
 
-### 🟢 Step 3 — Build a Simple Escrow Smart Contract: Completed
+## Current Progress
 
-* Created a `SimpleEscrow` smart contract using Solidity
-* Implemented Buyer and Seller roles
-* Deployed the contract to Ethereum Sepolia
-* Deposited **0.001 SepoliaETH** into the escrow
-* Verified the contract balance using `getBalance()`
-* Released the ETH from the smart contract to the Seller
-* Verified the internal ETH transfer using Sepolia Etherscan
-* Learned the difference between a wallet transaction and a smart-contract internal transfer
-* Explored gas limits, gas prices, and transaction fees
-* Learned the relationship between ETH and Wei
+**Current stage: SQLite staging completed.**
 
-### 🔲 Step 4 — Execute the First shoBITCOIN Transfer
+The next planned step is to build analytical queries against the staged data,
+starting with transaction counts, date ranges, active addresses, transfer
+activity, and other basic protocol KPIs.
 
-* Send SHOBIT between wallets
-* Understand transaction confirmation
-* Explore transaction fees and gas
-* Verify the transaction on the blockchain
+Longer-term work will cover:
 
-### 🔲 Step 5 — Learn Crypto & DeFi Fundamentals
+- Transaction and market analytics
+- Token and smart-contract risk analysis
+- Performance/KPI and risk Power BI dashboards
+- AI-assisted research and reporting
 
-* Bitcoin vs Ethereum
-* Stablecoins
-* Decentralized exchanges
-* Liquidity
-* Lending and borrowing
-* Staking
-* Tokenomics
-* Protocol fees and revenue
-* Total Value Locked (TVL)
-* DeFi risks
+AI will explain evidence and findings, but it must not invent evidence or
+replace the underlying rules.
 
-### 🔲 Step 6 — Collect & Analyze Crypto / On-Chain Data
+## Daily Progress Log
 
-* Token prices
-* Market capitalization
-* Trading volume
-* TVL
-* Protocol fees and revenue
-* Transactions
-* Wallet activity
-* Token holders
-* Token distribution
+Use this section to record one short update after each work session.
 
-### 🔲 Step 7 — Build Crypto & DeFi Analytics
+### 2026-09-15
 
-* SQL-based analysis
-* Financial KPIs
-* Token and protocol analysis
-* Wallet and transaction analysis
-* Risk indicators
-* Historical trend analysis
+- Added SQLite staging and duplicate inspection scripts.
+- Built `data/staging/shobitcoin.db` from the extracted Etherscan data.
+- Confirmed duplicate token-transfer handling is working.
 
-### 🔲 Step 8 — Build Crypto & DeFi Analytics Dashboard
+### 2026-09-15 — SQLite staging
 
-* Market performance
-* Protocol performance
-* Tokenomics
-* Liquidity
-* Financial metrics
-* Risk metrics
-* Interactive visualizations
+- Loaded and typed raw transaction and token-transfer JSON.
+- Applied duplicate protection with primary and unique keys.
+- Created `data/staging/shobitcoin.db`.
+- Result: 2000 transactions and 58 unique token transfers in SQLite; 0 and 0 new rows this run.
+- Next step: Run `python scripts/analytics/build_analytics.py`.
 
-### 🔲 Step 9 — Build AI Crypto Research Layer
+### 2026-09-15 — Analytics exports
 
-* AI-powered financial analysis
-* Natural-language data exploration
-* Protocol research summaries
-* AI-assisted risk analysis
-* Protocol comparisons
-* Intelligent insights from structured data
+- Built 5 SQLite analytical views.
+- Exported view results to `data/analytics/*.csv` for Power BI.
+- Result: v_daily_activity: 2 rows, v_daily_token_volume: 49 rows, v_token_summary: 24 rows, v_top_senders: 871 rows, v_function_usage: 11 rows
+- Next step: Review the CSV outputs and begin KPI analysis.
 
----
+### Next update
 
-## 🧩 Technology Stack
+- Date:
+- Work completed:
+- Validation/result:
+- Next step:
 
-### Blockchain
+## Setup
 
-* Ethereum
-* Sepolia Testnet
-* MetaMask
-* Etherscan
+```powershell
+python -m venv venv
+.\venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-### Smart Contracts
+Add the Etherscan API key to `.env`, then run extraction:
 
-* Solidity
-* ERC-20
-* Remix
+```powershell
+python scripts\extract\etherscan_extract.py --max-pages 2
+```
 
-### Analytics
+Build or refresh the SQLite staging database:
 
-* SQL
-* Power BI
-* Financial Analysis
-* On-chain / Blockchain Data
+```powershell
+python scripts\staging\build_sqlite.py
+```
 
-### AI
-
-* Generative AI
-* AI-assisted Financial Analysis
-* Natural-language Data Exploration
-* AI Research Agents
-* Intelligent Insights
-
----
-
-## 📂 Project Structure
+## Project Structure
 
 ```text
 shoBITCOIN/
-│
+├── .env                  # local API key; never commit
+├── .env.example
+├── .gitignore
 ├── README.md
-│
-├── shoBITCOIN.sol
-├── SimpleEscrow.sol
-│
+├── requirements.txt
+├── contracts/
+│   ├── shoBITCOIN.sol
+│   └── SimpleEscrow.sol
+├── data/
+│   ├── raw/etherscan/    # generated raw JSON, git-ignored
+│   └── staging/          # generated SQLite database
+├── scripts/
+│   ├── extract/
+│   │   └── etherscan_extract.py
+│   └── staging/
+│       ├── build_sqlite.py
+│       └── inspect_duplicates.py
 └── docs/
-    └── escrow.md
+    ├── escrow.md
+    └── sqlite.md
 ```
 
-The repository will grow as new smart contracts, analyses, datasets, dashboards, and AI components are developed.
+## Disclaimer
 
----
-
-## 🔭 Long-Term Vision
-
-The goal is to build an **AI-powered Crypto & DeFi Intelligence Platform** that combines:
-
-> **Blockchain → Data → Finance → Analytics → AI**
-
-The platform will eventually allow users to explore crypto assets and DeFi protocols through structured data, financial metrics, dashboards, and AI-generated research insights.
-
----
-
-## 📚 Learning Approach
-
-This project is being developed incrementally:
-
-**Learn → Build → Analyze → Document → Repeat**
-
-Each major stage will be documented through GitHub commits, technical notes, and project updates.
-
----
-
-## ⚠️ Disclaimer
-
-shoBITCOIN is an educational and experimental project.
-
-The current SHOBIT token is deployed on the **Ethereum Sepolia test network** and is not intended as a financial product or investment.
+shoBITCOIN is an educational, experimental, and research project. It does
+not provide investment advice and does not replace professional smart-contract
+audits, financial analysis, legal advice, cybersecurity assessments, or
+regulatory advice.

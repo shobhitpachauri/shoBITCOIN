@@ -1,0 +1,17 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Raw extracted data (large, regenerable — not source-controlled)
+data/raw/
+data/staging/
+data/analytics/
+
+# OS/editor
+.DS_Store
+.vscode/
