@@ -16,5 +16,6 @@ data/analytics/
 .DS_Store
 .vscode/
 
-# RAG vector store (regenerable via ingest_papers.py)
+# RAG document store (regenerable via ingest_papers.py)
+data/rag_documents.db
 data/chroma_db/

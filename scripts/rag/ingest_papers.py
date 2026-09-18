@@ -2,10 +2,10 @@
 ingest_papers.py
 
 RAG ingestion step. Reads PDF and text/markdown files from
-data/research_papers/{external,project_docs}/, chunks them, embeds each
-chunk locally (ChromaDB's built-in ONNX MiniLM model - lightweight,
-CPU-only, no PyTorch/GPU required), and stores them in a persistent local
-ChromaDB collection.
+data/research_papers/{external,project_docs}/, chunks them, and stores the
+chunks in a local SQLite document store. Retrieval is performed later with
+lightweight token-overlap search, so no native vector database or C++ build
+tools are required.
 
 Folder convention (this drives labeling, not just organization):
     data/research_papers/external/      -> external framework documents
@@ -19,8 +19,7 @@ the user which kind of source an answer is drawing from - never blending
 without saying which is which.
 
 Requirements:
-    pip install -r requirements.txt   (adds chromadb, pypdf)
-    First run downloads a small (~90MB) local embedding model automatically.
+    pip install -r requirements.txt   (adds pypdf)
 
 Setup:
     mkdir -p data/research_papers/external data/research_papers/project_docs
@@ -32,16 +31,14 @@ Usage:
 """
 
 import logging
+import sqlite3
 from pathlib import Path
 
-import chromadb
-from chromadb.utils import embedding_functions
 from pypdf import PdfReader
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RESEARCH_DIR = PROJECT_ROOT / "data" / "research_papers"
-CHROMA_DB_DIR = PROJECT_ROOT / "data" / "chroma_db"
-COLLECTION_NAME = "shobitcoin_frameworks"
+RAG_DB_PATH = PROJECT_ROOT / "data" / "rag_documents.db"
 
 CHUNK_SIZE_CHARS = 1200
 CHUNK_OVERLAP_CHARS = 200
@@ -108,13 +105,21 @@ def process_file(filepath: Path, source_category: str) -> list:
     return records
 
 
-def get_collection(embedding_fn=None):
-    """Shared helper so rag_query.py can open the same collection consistently."""
-    if embedding_fn is None:
-        embedding_fn = embedding_functions.DefaultEmbeddingFunction()
-    CHROMA_DB_DIR.mkdir(parents=True, exist_ok=True)
-    client = chromadb.PersistentClient(path=str(CHROMA_DB_DIR))
-    return client.get_or_create_collection(name=COLLECTION_NAME, embedding_function=embedding_fn)
+def get_connection() -> sqlite3.Connection:
+    RAG_DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+    connection = sqlite3.connect(RAG_DB_PATH)
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS document_chunks (
+            id TEXT PRIMARY KEY,
+            text TEXT NOT NULL,
+            source_file TEXT NOT NULL,
+            source_category TEXT NOT NULL,
+            page_number INTEGER NOT NULL,
+            chunk_index INTEGER NOT NULL
+        )
+    """)
+    connection.commit()
+    return connection
 
 
 def main():
@@ -124,8 +129,6 @@ def main():
             f"and data/research_papers/project_docs/ and add files first."
         )
         return
-
-    collection = get_collection()
 
     all_records = []
     for folder_name, source_category in SOURCE_CATEGORY_BY_FOLDER.items():
@@ -144,19 +147,34 @@ def main():
         logger.warning("No documents found to ingest.")
         return
 
-    ids = [
-        f"{r['metadata']['source_category']}_{r['metadata']['source_file']}_"
-        f"{r['metadata']['page_number']}_{r['metadata']['chunk_index']}"
-        for r in all_records
-    ]
-    documents = [r["text"] for r in all_records]
-    metadatas = [r["metadata"] for r in all_records]
+    connection = get_connection()
+    try:
+        connection.execute("DELETE FROM document_chunks")
+        connection.executemany(
+            """
+            INSERT INTO document_chunks
+            (id, text, source_file, source_category, page_number, chunk_index)
+            VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            [
+                (
+                    f"{r['metadata']['source_category']}_{r['metadata']['source_file']}_"
+                    f"{r['metadata']['page_number']}_{r['metadata']['chunk_index']}",
+                    r["text"],
+                    r["metadata"]["source_file"],
+                    r["metadata"]["source_category"],
+                    r["metadata"]["page_number"],
+                    r["metadata"]["chunk_index"],
+                )
+                for r in all_records
+            ],
+        )
+        connection.commit()
+        total = connection.execute("SELECT COUNT(*) FROM document_chunks").fetchone()[0]
+    finally:
+        connection.close()
 
-    logger.info(f"Embedding and storing {len(documents)} chunk(s) in ChromaDB (upsert - safe to re-run)...")
-    collection.upsert(ids=ids, documents=documents, metadatas=metadatas)
-
-    logger.info(f"Ingestion complete. Collection '{COLLECTION_NAME}' now has {collection.count()} chunk(s).")
-    logger.info(f"Stored at: {CHROMA_DB_DIR.resolve()}")
+    logger.info("Ingestion complete. Stored %s chunk(s) in %s", total, RAG_DB_PATH)
 
 
 if __name__ == "__main__":

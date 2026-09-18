@@ -33,7 +33,7 @@ The system must not produce unexplained black-box scores.
 | Data source | Etherscan free API |
 | Raw data | Timestamped JSON in `data/raw/etherscan/` |
 | Staged data | SQLite in `data/staging/shobitcoin.db` |
-| Main tools | Python, SQLite, SQL, Power BI, Solidity, ChromaDB, Streamlit |
+| Main tools | Python, SQLite, SQL, Power BI, Solidity, Streamlit, Groq |
 | Cost goal | $0 recurring cost |
 
 Free and public data sources will be used wherever possible. Data will never
@@ -82,8 +82,8 @@ The chatbot combines three explicitly separated source types:
 
 The model is used to explain supplied evidence. It must not invent findings or
 blend framework claims, project rules, and contract evidence into one unlabeled
-claim. ChromaDB stores local embeddings, while Groq provides the free-tier
-OpenAI-compatible LLM endpoint.
+claim. SQLite stores the local document chunks and lightweight retrieval uses
+token overlap, while Groq provides the free-tier OpenAI-compatible LLM endpoint.
 
 Place source documents in the appropriate folder:
 
@@ -92,7 +92,7 @@ data/research_papers/external/      # published papers and frameworks
 data/research_papers/project_docs/  # shoBITCOIN interpretation documents
 ```
 
-Ingest the documents into the local ChromaDB store:
+Ingest the documents into the local SQLite document store:
 
 ```powershell
 python scripts\rag\ingest_papers.py
@@ -196,7 +196,7 @@ shoBITCOIN/
 │   ├── raw/etherscan/    # generated raw JSON, git-ignored
 │   ├── staging/          # generated SQLite database
 │   ├── analytics/        # generated CSV exports for Power BI
-│   ├── chroma_db/        # generated local RAG vector store
+│   ├── rag_documents.db  # generated local RAG document store
 │   └── research_papers/
 │       ├── external/     # published framework documents
 │       └── project_docs/ # project interpretation documents
