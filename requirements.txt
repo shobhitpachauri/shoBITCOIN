@@ -1,2 +1,7 @@
 requests==2.32.3
 python-dotenv==1.0.1
+pycryptodome==3.21.0
+chromadb==0.5.23
+pypdf==5.1.0
+openai==1.57.0
+streamlit==1.40.2

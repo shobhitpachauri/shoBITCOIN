@@ -33,7 +33,7 @@ The system must not produce unexplained black-box scores.
 | Data source | Etherscan free API |
 | Raw data | Timestamped JSON in `data/raw/etherscan/` |
 | Staged data | SQLite in `data/staging/shobitcoin.db` |
-| Main tools | Python, SQLite, SQL, Power BI, Solidity |
+| Main tools | Python, SQLite, SQL, Power BI, Solidity, ChromaDB, Streamlit |
 | Cost goal | $0 recurring cost |
 
 Free and public data sources will be used wherever possible. Data will never
@@ -53,21 +53,73 @@ will be clearly identified.
 
 ## Current Progress
 
-**Current stage: SQLite staging completed.**
+**Current stage: analytics exports completed; RAG chatbot layer added.**
 
-The next planned step is to build analytical queries against the staged data,
-starting with transaction counts, date ranges, active addresses, transfer
-activity, and other basic protocol KPIs.
+The transaction pipeline now includes SQLite staging and analytical CSV exports
+for Power BI. A RAG chatbot layer has also been added for research and risk
+questions.
 
 Longer-term work will cover:
 
 - Transaction and market analytics
 - Token and smart-contract risk analysis
 - Performance/KPI and risk Power BI dashboards
-- AI-assisted research and reporting
+- AI-assisted research and reporting grounded in retrieved sources
 
 AI will explain evidence and findings, but it must not invent evidence or
 replace the underlying rules.
+
+## RAG Risk Chatbot
+
+The chatbot combines three explicitly separated source types:
+
+1. **External framework context** from published research papers such as EY's
+    Token Due Diligence paper.
+2. **Project interpretation** from shoBITCOIN's own framework-mapping and rule
+    documents.
+3. **Observed on-chain evidence** produced by the existing
+    `contract_risk_scan.py` scanner for a specified contract address.
+
+The model is used to explain supplied evidence. It must not invent findings or
+blend framework claims, project rules, and contract evidence into one unlabeled
+claim. ChromaDB stores local embeddings, while Groq provides the free-tier
+OpenAI-compatible LLM endpoint.
+
+Place source documents in the appropriate folder:
+
+```text
+data/research_papers/external/      # published papers and frameworks
+data/research_papers/project_docs/  # shoBITCOIN interpretation documents
+```
+
+Ingest the documents into the local ChromaDB store:
+
+```powershell
+python scripts\rag\ingest_papers.py
+```
+
+Add both API keys to `.env`:
+
+```text
+ETHERSCAN_API_KEY=your_etherscan_key
+GROQ_API_KEY=your_groq_key
+```
+
+Ask a question from the command line:
+
+```powershell
+python scripts\rag\rag_query.py "What makes a contract's admin risky?"
+python scripts\rag\rag_query.py "Is this contract risky?" --address 0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2
+```
+
+Start the Streamlit interface:
+
+```powershell
+streamlit run scripts\app\app.py
+```
+
+The chatbot is a research prototype and does not replace professional audits,
+legal advice, or financial advice.
 
 ## Daily Progress Log
 
@@ -104,12 +156,19 @@ Use this section to record one short update after each work session.
 ## Setup
 
 ```powershell
-python -m venv venv
-.\venv\Scripts\activate
-pip install -r requirements.txt
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-Add the Etherscan API key to `.env`, then run extraction:
+Add both API keys to `.env`, then run extraction:
+
+```text
+ETHERSCAN_API_KEY=your_etherscan_key
+GROQ_API_KEY=your_groq_key
+```
+
+Run extraction:
 
 ```powershell
 python scripts\extract\etherscan_extract.py --max-pages 2
@@ -135,13 +194,23 @@ shoBITCOIN/
 │   └── SimpleEscrow.sol
 ├── data/
 │   ├── raw/etherscan/    # generated raw JSON, git-ignored
-│   └── staging/          # generated SQLite database
+│   ├── staging/          # generated SQLite database
+│   ├── analytics/        # generated CSV exports for Power BI
+│   ├── chroma_db/        # generated local RAG vector store
+│   └── research_papers/
+│       ├── external/     # published framework documents
+│       └── project_docs/ # project interpretation documents
 ├── scripts/
 │   ├── extract/
 │   │   └── etherscan_extract.py
-│   └── staging/
+│   ├── staging/
 │       ├── build_sqlite.py
 │       └── inspect_duplicates.py
+│   ├── rag/
+│   │   ├── ingest_papers.py
+│   │   └── rag_query.py
+│   └── app/
+│       └── app.py
 └── docs/
     ├── escrow.md
     └── sqlite.md
